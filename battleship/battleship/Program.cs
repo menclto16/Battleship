@@ -10,30 +10,56 @@ namespace battleship
     {
         static void Main(string[] args)
         {
-            
+            List<Ship> ships = new List<Ship>();
 
-            Console.Write(" A  B  C  D  E  F  G  H  I  J\n");
-            for (int i = 0; i < 10; i++)
+            Ship ship1 = new Ship();
+            Ship ship2 = new Ship();
+            ship1.createShip(5, 1, 1);
+            ship2.createShip(6, 5, 8);
+            ships.Add(ship1);
+            ships.Add(ship2);
+
+            Console.Write("     A  B  C  D  E  F  G  H  I  J\n");
+            for (int y = 0; y < 10; y++)
             {
-                for (int b = 0; b < 10; b++)
+                Console.BackgroundColor = ConsoleColor.Black;
+
+                int numLabel = y + 1;
+                string label = Convert.ToString(numLabel);
+                label = (numLabel < 10) ? " " + label + "  " : " " + label + " ";
+                Console.Write(label);
+
+                for (int x = 0; x < 10; x++)
                 {
-                    if (b % 2 == 0 && i % 2 == 0)
+                    if (x % 2 == 0 && y % 2 == 0)
                     {
                         Console.BackgroundColor = ConsoleColor.DarkGray;
-                    } else if (b % 2 != 0 && i % 2 == 0)
+                    } else if (x % 2 != 0 && y % 2 == 0)
                     {
                         Console.BackgroundColor = ConsoleColor.Gray;
-                    } else if (b % 2 != 0 && i % 2 != 0)
+                    } else if (x % 2 != 0 && y % 2 != 0)
                     {
                         Console.BackgroundColor = ConsoleColor.DarkGray;
-                    } else if (b % 2 == 0 && i % 2 != 0)
+                    } else if (x % 2 == 0 && y % 2 != 0)
                     {
                         Console.BackgroundColor = ConsoleColor.Gray;
                     }
 
-                    Console.Write("   ");
+                    foreach (var ship in ships)
+                    {
+                        foreach (var block in ship.blocks)
+                        {
+                            if (x == block.X && y == block.Y)
+                            {
+                                Console.BackgroundColor = ConsoleColor.DarkRed;
+                            }
+                        }
 
-                    if (b == 9)
+                    }
+
+                    Console.Write("   ");
+                    
+                    if (x == 9)
                     {
                         Console.Write("\n");
                     }

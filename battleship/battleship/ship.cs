@@ -8,11 +8,9 @@ namespace battleship
 {
     class Ship
     {
-        public int posX;
-        public int posY;
-        List<Pos> blocks = new List<Pos>();
+        public List<Pos> blocks = new List<Pos>();
 
-        public void setPos(int type, int newPosX, int newPosY)
+        public void createShip(int type, int newPosX, int newPosY)
         {
             Pos blockPos1 = new Pos();
             Pos blockPos2 = new Pos();
@@ -65,14 +63,72 @@ namespace battleship
                     blocks.Add(blockPos3);
                     break;
                 case 4:
+                    blockPos1.X = newPosX;
+                    blockPos1.Y = newPosY;
+                    blocks.Add(blockPos1);
+
+                    blockPos2.X = newPosX + 1;
+                    blockPos2.Y = newPosY;
+                    blocks.Add(blockPos2);
+
+                    blockPos3.X = newPosX + 2;
+                    blockPos3.Y = newPosY;
+                    blocks.Add(blockPos3);
+
+                    blockPos4.X = newPosX + 3;
+                    blockPos4.Y = newPosY;
+                    blocks.Add(blockPos4);
                     break;
                 case 5:
+                    blockPos1.X = newPosX;
+                    blockPos1.Y = newPosY;
+                    blocks.Add(blockPos1);
+
+                    blockPos2.X = newPosX + 1;
+                    blockPos2.Y = newPosY;
+                    blocks.Add(blockPos2);
+
+                    blockPos3.X = newPosX + 2;
+                    blockPos3.Y = newPosY;
+                    blocks.Add(blockPos3);
+
+                    blockPos4.X = newPosX + 3;
+                    blockPos4.Y = newPosY;
+                    blocks.Add(blockPos4);
+
+                    blockPos5.X = newPosX + 4;
+                    blockPos5.Y = newPosY;
+                    blocks.Add(blockPos5);
                     break;
                 case 6:
+                    blockPos1.X = newPosX;
+                    blockPos1.Y = newPosY;
+                    blocks.Add(blockPos1);
+
+                    blockPos2.X = newPosX + 1;
+                    blockPos2.Y = newPosY;
+                    blocks.Add(blockPos2);
+
+                    blockPos3.X = newPosX;
+                    blockPos3.Y = newPosY - 1;
+                    blocks.Add(blockPos3);
                     break;
                 case 7:
-                    break;
-                case 8:
+                    blockPos1.X = newPosX;
+                    blockPos1.Y = newPosY;
+                    blocks.Add(blockPos1);
+
+                    blockPos2.X = newPosX - 1;
+                    blockPos2.Y = newPosY;
+                    blocks.Add(blockPos2);
+
+                    blockPos3.X = newPosX;
+                    blockPos3.Y = newPosY - 1;
+                    blocks.Add(blockPos3);
+
+                    blockPos4.X = newPosX + 1;
+                    blockPos4.Y = newPosY;
+                    blocks.Add(blockPos4);
                     break;
             }
         }
