@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Block.cs" />
     <Compile Include="Pos.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Program.cs" />
