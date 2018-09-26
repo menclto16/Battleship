@@ -20,8 +20,6 @@ namespace battleship
             Pos blockPos6 = new Pos();
             Pos blockPos7 = new Pos();
 
-            int state
-
             switch (type)
             {
                 case 0:
