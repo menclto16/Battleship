@@ -52,7 +52,7 @@ namespace battleship
                         {
                             if (x == ships[a].blocks[b].X && y == ships[a].blocks[b].Y)
                             {
-                                Console.BackgroundColor = ConsoleColor.DarkRed;
+                                Console.BackgroundColor = ConsoleColor.Red;
 
                                 for (int c = 0; c < ships.Count; c++)
                                 {
@@ -65,14 +65,13 @@ namespace battleship
                                     {
                                         if (ships[a].blocks[b].X == ships[c].blocks[d].X && ships[a].blocks[b].Y == ships[c].blocks[d].Y)
                                         {
-                                            Console.BackgroundColor = ConsoleColor.Red;
+                                            Console.BackgroundColor = ConsoleColor.DarkRed;
                                         }
                                     }
                                 }
                             }
                         }
                     }
-
 
                     Console.Write("   ");
 
@@ -91,7 +90,7 @@ namespace battleship
             int shipNum = 0;
             int shipMem = -1;
             bool overlap = false;
-            int[] shipTypeList = { 0, 1, 2, 3, 4, 5, 6, 7 };
+            int[] shipTypeList = { 0, 0, 1, 1, 2, 2, 3, 3, 4, 5, 6, 7 };
             List<Ship> ships = new List<Ship>();
 
             while (true)
@@ -99,7 +98,7 @@ namespace battleship
                 if (shipNum != shipMem)
                 {
                     Ship ship = new Ship();
-                    ship.createShip(shipTypeList[shipNum], 0, 0);
+                    ship.CreateShip(shipTypeList[shipNum], 0, 0);
                     ships.Add(ship);
 
                     shipMem = shipNum;
@@ -147,9 +146,6 @@ namespace battleship
                     Console.WriteLine("Lode se nesmi prekryvat!");
                     overlap = false;
                 }
-                
-
-
 
                 if (shipNum >= shipTypeList.Length)
                 {
@@ -158,75 +154,25 @@ namespace battleship
 
                 ConsoleKeyInfo inputKey = Console.ReadKey();
 
-                if (inputKey.Key == ConsoleKey.LeftArrow)
+                if (inputKey.Key == ConsoleKey.RightArrow)
                 {
-                    for (int i = 0; i < blocksLen; i++)
-                    {
-                        ships[shipNum].blocks[i].X--;
-                    }
-                }
-                else if (inputKey.Key == ConsoleKey.UpArrow)
-                {
-                    for (int i = 0; i < blocksLen; i++)
-                    {
-                        ships[shipNum].blocks[i].Y--;
-                    }
-                }
-                else if (inputKey.Key == ConsoleKey.RightArrow)
-                {
-                    for (int i = 0; i < blocksLen; i++)
-                    {
-                        ships[shipNum].blocks[i].X++;
-                    }
+                    ships[shipNum].MoveShip(0);
                 }
                 else if (inputKey.Key == ConsoleKey.DownArrow)
                 {
-                    for (int i = 0; i < blocksLen; i++)
-                    {
-                        ships[shipNum].blocks[i].Y++;
-                    }
+                    ships[shipNum].MoveShip(1);
+                }
+                else if (inputKey.Key == ConsoleKey.LeftArrow)
+                {
+                    ships[shipNum].MoveShip(2);
+                }
+                else if (inputKey.Key == ConsoleKey.UpArrow)
+                {
+                    ships[shipNum].MoveShip(3);
                 }
                 else if (inputKey.Key == ConsoleKey.R)
                 {
-                    int anchorX = ships[shipNum].blocks[0].X;
-                    int anchorY = ships[shipNum].blocks[0].Y;
-
-                    for (int i = 1; i < blocksLen; i++)
-                    {
-                        int X = ships[shipNum].blocks[i].X;
-                        int Y = ships[shipNum].blocks[i].Y;
-
-                        int anchorLenX = Math.Abs(anchorX - X);
-                        int anchorLenY = Math.Abs(anchorY - Y);
-
-                        if (X == anchorX)
-                        {
-                            ships[shipNum].blocks[i].Y = anchorY;
-
-                            if (Y > anchorY)
-                            {
-                                ships[shipNum].blocks[i].X = X - anchorLenY;
-                            }
-                            else if (Y < anchorY)
-                            {
-                                ships[shipNum].blocks[i].X = X + anchorLenY;
-                            }
-
-                        }
-                        else if (Y == anchorY)
-                        {
-                            ships[shipNum].blocks[i].X = anchorX;
-
-                            if (X > anchorX)
-                            {
-                                ships[shipNum].blocks[i].Y = Y + anchorLenX;
-                            }
-                            else if (X < anchorX)
-                            {
-                                ships[shipNum].blocks[i].Y = Y - anchorLenX;
-                            }
-                        }
-                    }
+                    ships[shipNum].RotateShip(); 
                 }
                 else if (inputKey.Key == ConsoleKey.Enter)
                 {

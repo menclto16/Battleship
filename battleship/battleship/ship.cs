@@ -10,7 +10,7 @@ namespace battleship
     {
         public List<Pos> blocks = new List<Pos>();
 
-        public void createShip(int type, int newPosX, int newPosY)
+        public void CreateShip(int type, int newPosX, int newPosY)
         {
             Pos blockPos1 = new Pos();
             Pos blockPos2 = new Pos();
@@ -129,6 +129,84 @@ namespace battleship
                     blockPos4.X = newPosX + 1;
                     blockPos4.Y = newPosY;
                     blocks.Add(blockPos4);
+                    break;
+            }
+        }
+
+        public void RotateShip()
+        {
+            int blocksLen = blocks.Count;
+
+            int anchorX = blocks[0].X;
+            int anchorY = blocks[0].Y;
+
+            for (int i = 1; i < blocksLen; i++)
+            {
+                int X = blocks[i].X;
+                int Y = blocks[i].Y;
+
+                int anchorLenX = Math.Abs(anchorX - X);
+                int anchorLenY = Math.Abs(anchorY - Y);
+
+                if (X == anchorX)
+                {
+                    blocks[i].Y = anchorY;
+
+                    if (Y > anchorY)
+                    {
+                        blocks[i].X = X - anchorLenY;
+                    }
+                    else if (Y < anchorY)
+                    {
+                        blocks[i].X = X + anchorLenY;
+                    }
+
+                }
+                else if (Y == anchorY)
+                {
+                    blocks[i].X = anchorX;
+
+                    if (X > anchorX)
+                    {
+                        blocks[i].Y = Y + anchorLenX;
+                    }
+                    else if (X < anchorX)
+                    {
+                        blocks[i].Y = Y - anchorLenX;
+                    }
+                }
+            }
+        }
+
+        public void MoveShip(int direction)
+        {
+            int blocksLen = blocks.Count;
+
+            switch (direction)
+            {
+                case 0:
+                    for (int i = 0; i < blocksLen; i++)
+                    {
+                        blocks[i].X++;
+                    }
+                    break;
+                case 1:
+                    for (int i = 0; i < blocksLen; i++)
+                    {
+                        blocks[i].Y++;
+                    }
+                    break;
+                case 2:
+                    for (int i = 0; i < blocksLen; i++)
+                    {
+                        blocks[i].X--;
+                    }
+                    break;
+                case 3:
+                    for (int i = 0; i < blocksLen; i++)
+                    {
+                        blocks[i].Y--;
+                    }
                     break;
             }
         }
