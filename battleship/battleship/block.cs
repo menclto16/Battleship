@@ -8,8 +8,14 @@ namespace battleship
 {
     class Block
     {
-        public List<Pos> block = new List<Pos>();
+        bool state = false;
 
+        public Pos block = new Pos();
 
+        public void CreateBlock(int x, int y)
+        {
+            block.X = x;
+            block.Y = y;
+        }
     }
 }

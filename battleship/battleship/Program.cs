@@ -50,7 +50,7 @@ namespace battleship
                     {
                         for (int b = 0; b < ships[a].blocks.Count; b++)
                         {
-                            if (x == ships[a].blocks[b].X && y == ships[a].blocks[b].Y)
+                            if (x == ships[a].blocks[b].block.X && y == ships[a].blocks[b].block.Y)
                             {
                                 Console.BackgroundColor = ConsoleColor.Red;
 
@@ -63,7 +63,7 @@ namespace battleship
 
                                     for (int d = 0; d < ships[c].blocks.Count; d++)
                                     {
-                                        if (ships[a].blocks[b].X == ships[c].blocks[d].X && ships[a].blocks[b].Y == ships[c].blocks[d].Y)
+                                        if (ships[a].blocks[b].block.X == ships[c].blocks[d].block.X && ships[a].blocks[b].block.Y == ships[c].blocks[d].block.Y)
                                         {
                                             Console.BackgroundColor = ConsoleColor.DarkRed;
                                         }
@@ -73,6 +73,7 @@ namespace battleship
                         }
                     }
 
+                    
                     Console.Write("   ");
 
                     if (x == 9)
@@ -106,41 +107,10 @@ namespace battleship
 
                 int blocksLen = ships[shipNum].blocks.Count;
 
-                for (int a = 0; a < blocksLen; a++)
-                {
-                    if (ships[shipMem].blocks[a].X < 0)
-                    {
-                        for (int b = 0; b < blocksLen; b++)
-                        {
-                            ships[shipMem].blocks[b].X++;
-                        }
-                    }
-                    else if (ships[shipMem].blocks[a].X > 9)
-                    {
-                        for (int b = 0; b < blocksLen; b++)
-                        {
-                            ships[shipMem].blocks[b].X--;
-                        }
-                    }
-
-                    if (ships[shipMem].blocks[a].Y < 0)
-                    {
-                        for (int b = 0; b < blocksLen; b++)
-                        {
-                            ships[shipMem].blocks[b].Y++;
-                        }
-                    }
-                    else if (ships[shipMem].blocks[a].Y > 9)
-                    {
-                        for (int b = 0; b < blocksLen; b++)
-                        {
-                            ships[shipMem].blocks[b].Y--;
-                        }
-                    }
-                }
-
+                ships[shipNum].OptimiseShip();
                 printGraphic(ships);
                 Console.WriteLine("<^>v - posun, r - otoceni");
+
                 if (overlap)
                 {
                     Console.WriteLine("Lode se nesmi prekryvat!");
@@ -184,7 +154,7 @@ namespace battleship
 
                             for (int c = 0; c < ships[b].blocks.Count; c++)
                             {
-                                if (ships[shipNum].blocks[a].X == ships[b].blocks[c].X && ships[shipNum].blocks[a].Y == ships[b].blocks[c].Y)
+                                if (ships[shipNum].blocks[a].block.X == ships[b].blocks[c].block.X && ships[shipNum].blocks[a].block.Y == ships[b].blocks[c].block.Y)
                                 {
                                     overlap = true;
                                     break;
