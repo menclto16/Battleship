@@ -10,12 +10,12 @@ namespace battleship
     {
         bool state = false;
 
-        public Pos block = new Pos();
+        public Pos Pos = new Pos();
 
         public void CreateBlock(int x, int y)
         {
-            block.X = x;
-            block.Y = y;
+            Pos.X = x;
+            Pos.Y = y;
         }
     }
 }

@@ -50,7 +50,7 @@ namespace battleship
                     {
                         for (int b = 0; b < ships[a].blocks.Count; b++)
                         {
-                            if (x == ships[a].blocks[b].block.X && y == ships[a].blocks[b].block.Y)
+                            if (x == ships[a].blocks[b].Pos.X && y == ships[a].blocks[b].Pos.Y)
                             {
                                 Console.BackgroundColor = ConsoleColor.Red;
 
@@ -63,7 +63,7 @@ namespace battleship
 
                                     for (int d = 0; d < ships[c].blocks.Count; d++)
                                     {
-                                        if (ships[a].blocks[b].block.X == ships[c].blocks[d].block.X && ships[a].blocks[b].block.Y == ships[c].blocks[d].block.Y)
+                                        if (ships[a].blocks[b].Pos.X == ships[c].blocks[d].Pos.X && ships[a].blocks[b].Pos.Y == ships[c].blocks[d].Pos.Y)
                                         {
                                             Console.BackgroundColor = ConsoleColor.DarkRed;
                                         }
@@ -154,7 +154,7 @@ namespace battleship
 
                             for (int c = 0; c < ships[b].blocks.Count; c++)
                             {
-                                if (ships[shipNum].blocks[a].block.X == ships[b].blocks[c].block.X && ships[shipNum].blocks[a].block.Y == ships[b].blocks[c].block.Y)
+                                if (ships[shipNum].blocks[a].Pos.X == ships[b].blocks[c].Pos.X && ships[shipNum].blocks[a].Pos.Y == ships[b].blocks[c].Pos.Y)
                                 {
                                     overlap = true;
                                     break;

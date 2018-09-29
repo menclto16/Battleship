@@ -87,6 +87,7 @@ namespace battleship
                     blocks.Add(new Block());
                     blocks.Add(new Block());
                     blocks.Add(new Block());
+                    blocks.Add(new Block());
 
                     blocks[0].CreateBlock(x, y);
                     blocks[1].CreateBlock(x - 1, y);
@@ -100,42 +101,42 @@ namespace battleship
         {
             int blocksLen = blocks.Count;
 
-            int anchorX = blocks[0].block.X;
-            int anchorY = blocks[0].block.Y;
+            int anchorX = blocks[0].Pos.X;
+            int anchorY = blocks[0].Pos.Y;
 
             for (int i = 1; i < blocksLen; i++)
             {
-                int X = blocks[i].block.X;
-                int Y = blocks[i].block.Y;
+                int X = blocks[i].Pos.X;
+                int Y = blocks[i].Pos.Y;
 
                 int anchorLenX = Math.Abs(anchorX - X);
                 int anchorLenY = Math.Abs(anchorY - Y);
 
                 if (X == anchorX)
                 {
-                    blocks[i].block.Y = anchorY;
+                    blocks[i].Pos.Y = anchorY;
 
                     if (Y > anchorY)
                     {
-                        blocks[i].block.X = X - anchorLenY;
+                        blocks[i].Pos.X = X - anchorLenY;
                     }
                     else if (Y < anchorY)
                     {
-                        blocks[i].block.X = X + anchorLenY;
+                        blocks[i].Pos.X = X + anchorLenY;
                     }
 
                 }
                 else if (Y == anchorY)
                 {
-                    blocks[i].block.X = anchorX;
+                    blocks[i].Pos.X = anchorX;
 
                     if (X > anchorX)
                     {
-                        blocks[i].block.Y = Y + anchorLenX;
+                        blocks[i].Pos.Y = Y + anchorLenX;
                     }
                     else if (X < anchorX)
                     {
-                        blocks[i].block.Y = Y - anchorLenX;
+                        blocks[i].Pos.Y = Y - anchorLenX;
                     }
                 }
             }
@@ -150,25 +151,25 @@ namespace battleship
                 case 0:
                     for (int i = 0; i < blocksLen; i++)
                     {
-                        blocks[i].block.X++;
+                        blocks[i].Pos.X++;
                     }
                     break;
                 case 1:
                     for (int i = 0; i < blocksLen; i++)
                     {
-                        blocks[i].block.Y++;
+                        blocks[i].Pos.Y++;
                     }
                     break;
                 case 2:
                     for (int i = 0; i < blocksLen; i++)
                     {
-                        blocks[i].block.X--;
+                        blocks[i].Pos.X--;
                     }
                     break;
                 case 3:
                     for (int i = 0; i < blocksLen; i++)
                     {
-                        blocks[i].block.Y--;
+                        blocks[i].Pos.Y--;
                     }
                     break;
             }
@@ -180,33 +181,33 @@ namespace battleship
 
             for (int a = 0; a < blocksLen; a++)
             {
-                if (blocks[a].block.X < 0)
+                if (blocks[a].Pos.X < 0)
                 {
                     for (int b = 0; b < blocksLen; b++)
                     {
-                        blocks[b].block.X++;
+                        blocks[b].Pos.X++;
                     }
                 }
-                else if (blocks[a].block.X > 9)
+                else if (blocks[a].Pos.X > 9)
                 {
                     for (int b = 0; b < blocksLen; b++)
                     {
-                        blocks[b].block.X--;
+                        blocks[b].Pos.X--;
                     }
                 }
 
-                if (blocks[a].block.Y < 0)
+                if (blocks[a].Pos.Y < 0)
                 {
                     for (int b = 0; b < blocksLen; b++)
                     {
-                        blocks[b].block.Y++;
+                        blocks[b].Pos.Y++;
                     }
                 }
-                else if (blocks[a].block.Y > 9)
+                else if (blocks[a].Pos.Y > 9)
                 {
                     for (int b = 0; b < blocksLen; b++)
                     {
-                        blocks[b].block.Y--;
+                        blocks[b].Pos.Y--;
                     }
                 }
             }
