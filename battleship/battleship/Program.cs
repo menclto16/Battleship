@@ -29,22 +29,7 @@ namespace battleship
 
                 for (int x = 0; x < 10; x++)
                 {
-                    if (x % 2 == 0 && y % 2 == 0)
-                    {
-                        Console.BackgroundColor = ConsoleColor.DarkGray;
-                    }
-                    else if (x % 2 != 0 && y % 2 == 0)
-                    {
-                        Console.BackgroundColor = ConsoleColor.Gray;
-                    }
-                    else if (x % 2 != 0 && y % 2 != 0)
-                    {
-                        Console.BackgroundColor = ConsoleColor.DarkGray;
-                    }
-                    else if (x % 2 == 0 && y % 2 != 0)
-                    {
-                        Console.BackgroundColor = ConsoleColor.Gray;
-                    }
+                    Console.BackgroundColor = ConsoleColor.Gray;
 
                     for (int a = 0; a < ships.Count; a++)
                     {
@@ -73,7 +58,6 @@ namespace battleship
                         }
                     }
 
-                    
                     Console.Write("   ");
 
                     if (x == 9)
@@ -92,23 +76,22 @@ namespace battleship
             int shipMem = -1;
             bool overlap = false;
             int[] shipTypeList = { 0, 0, 1, 1, 2, 2, 3, 3, 4, 5, 6, 7 };
-            List<Ship> ships = new List<Ship>();
+            Map map = new Map();
 
             while (true)
             {
                 if (shipNum != shipMem)
                 {
                     Ship ship = new Ship();
-                    ship.CreateShip(shipTypeList[shipNum], 0, 0);
-                    ships.Add(ship);
+                    map.AddNewShip(shipTypeList[shipNum], 0, 0);
 
                     shipMem = shipNum;
                 }
 
-                int blocksLen = ships[shipNum].blocks.Count;
+                int blocksLen = map.ships[shipNum].blocks.Count;
 
-                ships[shipNum].OptimiseShip();
-                printGraphic(ships);
+                map.ships[shipNum].OptimiseShip();
+                printGraphic(map.ships);
                 Console.WriteLine("<^>v - posun, r - otoceni");
 
                 if (overlap)
@@ -126,35 +109,35 @@ namespace battleship
 
                 if (inputKey.Key == ConsoleKey.RightArrow)
                 {
-                    ships[shipNum].MoveShip(0);
+                    map.ships[shipNum].MoveShip(0);
                 }
                 else if (inputKey.Key == ConsoleKey.DownArrow)
                 {
-                    ships[shipNum].MoveShip(1);
+                    map.ships[shipNum].MoveShip(1);
                 }
                 else if (inputKey.Key == ConsoleKey.LeftArrow)
                 {
-                    ships[shipNum].MoveShip(2);
+                    map.ships[shipNum].MoveShip(2);
                 }
                 else if (inputKey.Key == ConsoleKey.UpArrow)
                 {
-                    ships[shipNum].MoveShip(3);
+                    map.ships[shipNum].MoveShip(3);
                 }
                 else if (inputKey.Key == ConsoleKey.R)
                 {
-                    ships[shipNum].RotateShip(); 
+                    map.ships[shipNum].RotateShip(); 
                 }
                 else if (inputKey.Key == ConsoleKey.Enter)
                 {
-                    for (int a = 0; a < ships[shipNum].blocks.Count; a++)
+                    for (int a = 0; a < map.ships[shipNum].blocks.Count; a++)
                     {
-                        for (int b = 0; b < ships.Count; b++)
+                        for (int b = 0; b < map.ships.Count; b++)
                         {
                             if (b == shipNum) continue;
 
-                            for (int c = 0; c < ships[b].blocks.Count; c++)
+                            for (int c = 0; c < map.ships[b].blocks.Count; c++)
                             {
-                                if (ships[shipNum].blocks[a].Pos.X == ships[b].blocks[c].Pos.X && ships[shipNum].blocks[a].Pos.Y == ships[b].blocks[c].Pos.Y)
+                                if (map.ships[shipNum].blocks[a].Pos.X == map.ships[b].blocks[c].Pos.X && map.ships[shipNum].blocks[a].Pos.Y == map.ships[b].blocks[c].Pos.Y)
                                 {
                                     overlap = true;
                                     break;
@@ -167,7 +150,7 @@ namespace battleship
                 }
             }
 
-            return ships;
+            return map.ships;
         }
     }
 }
