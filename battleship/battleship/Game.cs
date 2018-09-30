@@ -11,15 +11,13 @@ namespace battleship
         public int gameType;
         Map map = new Map();
 
-        enum XChar { A, B, C, D, E, F, G, H, I, J };
-
         public void StartGame()
         {
             switch (gameType)
             {
                 case 0:
-                    map.AddNewField();
-                    map.AddNewField();
+                    map.AddNewField(1);
+                    map.AddNewField(2);
                     break;
             }
 
@@ -35,28 +33,56 @@ namespace battleship
             int playerNum = 0;
             int opponentNum = 1;
             bool match = false;
+            bool downed = false;
+            int numOfDownedBlocks;
+            int numOfBlocks = 0;
+            int hitBlocks1 = 0;
+            int hitBlocks2 = 0;
+
+            foreach (var ship in map.fields[0].ships)
+            {
+                foreach (var block in ship.blocks)
+                {
+                    numOfBlocks++;
+                }
+            }
+
+            map.PrintMap();
+            Console.WriteLine();
 
             while (true)
             {
-                PrintGraphic();
-                Console.WriteLine(map.fields[playerNum].playerName + " strili:");
-                try
+                Console.WriteLine("Hrac " + map.fields[playerNum].playerName + " strili:");
+
+                while (true)
                 {
-                    userInput = Console.ReadLine();
+                    try
+                    {
+                        userInput = Console.ReadLine();
+                        if (userInput.Length <= 3 && userInput.Length >=2 && Char.IsLetter(userInput[0]) && int.TryParse(userInput.Substring(1), out int n))
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Spatny vstup! Format vstupu: 'A1-I10'");
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("Spatny vstup! Format vstupu: 'A1-I10'");
+                    }
                 }
-                catch (Exception)
-                {
-                    Console.WriteLine("Spatny vstup! Format vstupu: 'A1'");
-                }
+
+                userInput = userInput.ToUpper();
 
                 x = userInput[0] - 65;
 
                 y = Int32.Parse(userInput.Substring(1)) - 1;
-                //y = (int)Char.GetNumericValue(userInput[1]) - 1;
 
                 for (int a = 0; a < map.fields[opponentNum].ships.Count; a++)
                 {
-                    if (match) break;
+                    numOfDownedBlocks = 0;
 
                     for (int b = 0; b < map.fields[opponentNum].ships[a].blocks.Count; b++)
                     {
@@ -64,21 +90,37 @@ namespace battleship
                         {
                             map.fields[opponentNum].ships[a].blocks[b].ChangeState();
                             match = true;
-                            break;
+                            if (playerNum == 0) hitBlocks1++;
+                            if (playerNum == 1) hitBlocks2++;
                         }
+
+                        if (map.fields[opponentNum].ships[a].blocks[b].state) numOfDownedBlocks++;
+
+                        if (numOfDownedBlocks == map.fields[opponentNum].ships[a].blocks.Count && match) downed = true;
                     }
                 }
 
-                Console.WriteLine("x: " + x + " y: " + y);
+                map.PrintMap();
 
                 if (match)
                 {
-                    Console.WriteLine("Zasah!");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    if (downed)
+                    {
+                        Console.WriteLine("Zasah! Potopena!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Zasah!");
+                    }
                 }
                 else if (!match)
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Vedle!");
                 }
+
+                Console.ForegroundColor = ConsoleColor.Gray;
 
                 if (!match && playerNum == 0)
                 {
@@ -88,6 +130,7 @@ namespace battleship
                 else if (match && playerNum == 0)
                 {
                     match = false;
+                    downed = false;
                 }
                 else if (!match && playerNum == 1)
                 {
@@ -97,66 +140,21 @@ namespace battleship
                 else if (match && playerNum == 1)
                 {
                     match = false;
+                    downed = false;
                 }
-            }
-            
-        }
 
-        public void PrintGraphic()
-        {
-            Console.Clear();
-
-            string nameString = "    " + map.fields[0].playerName;
-            nameString += String.Concat(Enumerable.Repeat(" ", 43 - map.fields[0].playerName.Length));
-            nameString += map.fields[1].playerName;
-            Console.WriteLine(nameString);
-            Console.WriteLine("     A  B  C  D  E  F  G  H  I  J               A  B  C  D  E  F  G  H  I  J");
-            for (int y = 0; y < 10; y++)
-            {
-                int fieldNum = 0;
-                int column = 0;    
-
-                for (int x = 0; x < 20; x++)
+                if (hitBlocks1 == numOfBlocks || hitBlocks2 == numOfBlocks)
                 {
-                    if (x == 0 || x == 10)
-                    {
-                        int numLabel = y + 1;
-                        string label = Convert.ToString(numLabel);
-                        label = (numLabel < 10) ? " " + label + "  " : " " + label + " ";
-                        Console.Write(label);
-                    }
-
-                    Console.BackgroundColor = ConsoleColor.Gray;
-
-                    for (int a = 0; a < map.fields[fieldNum].ships.Count; a++)
-                    {
-                        for (int b = 0; b < map.fields[fieldNum].ships[a].blocks.Count; b++)
-                        {
-                            if (map.fields[fieldNum].ships[a].blocks[b].Pos.X == column && map.fields[fieldNum].ships[a].blocks[b].Pos.Y == y && map.fields[fieldNum].ships[a].blocks[b].state)
-                            {
-                                Console.BackgroundColor = ConsoleColor.Red;
-                            }
-                        }
-                    }
-
-                    Console.Write(" X ");
-
-                    if (x == 19)
-                    {
-                        Console.Write("\n");
-                    }
-
-                    column++;
-
-                    Console.BackgroundColor = ConsoleColor.Black;
-
-                    if (x == 9)
-                    {
-                        fieldNum++;
-                        column = 0;
-                        Console.Write("         ");
-                    }
-                } 
+                    map.fields[playerNum].UncoverBlocks();
+                    map.PrintMap();
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("\nHrac " + map.fields[playerNum].playerName + " vyhral!");
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.WriteLine("Stiskni libovolne tlacitko pro navrat do menu...");
+                    Console.ReadKey();
+                    Console.Clear();
+                    break;
+                }
             }
         }
     }

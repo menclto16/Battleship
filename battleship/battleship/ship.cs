@@ -68,11 +68,11 @@ namespace battleship
                     blocks.Add(new Block());
 
                     blocks[0].CreateBlock(x, y);
-                    blocks[1].CreateBlock(x + 1, y);
-                    blocks[2].CreateBlock(x + 2, y);
-                    blocks[3].CreateBlock(x + 3, y);
-                    blocks[4].CreateBlock(x + 4, y);
-                    blocks[5].CreateBlock(x + 5, y);
+                    blocks[1].CreateBlock(x - 1, y);
+                    blocks[2].CreateBlock(x + 1, y);
+                    blocks[3].CreateBlock(x - 1, y + 1);
+                    blocks[4].CreateBlock(x, y + 1);
+                    blocks[5].CreateBlock(x + 1, y + 1);
                     break;
                 case 6:
                     blocks.Add(new Block());
@@ -80,8 +80,8 @@ namespace battleship
                     blocks.Add(new Block());
 
                     blocks[0].CreateBlock(x, y);
-                    blocks[1].CreateBlock(x + 1, y);
-                    blocks[2].CreateBlock(x, y - 1);
+                    blocks[1].CreateBlock(x - 1, y + 1);
+                    blocks[2].CreateBlock(x + 1, y + 1);
                     break;
                 case 7:
                     blocks.Add(new Block());
@@ -90,9 +90,65 @@ namespace battleship
                     blocks.Add(new Block());
 
                     blocks[0].CreateBlock(x, y);
-                    blocks[1].CreateBlock(x - 1, y);
-                    blocks[2].CreateBlock(x, y - 1);
+                    blocks[1].CreateBlock(x, y - 1);
+                    blocks[2].CreateBlock(x - 1, y);
                     blocks[3].CreateBlock(x + 1, y);
+                    break;
+                case 8:
+                    blocks.Add(new Block());
+                    blocks.Add(new Block());
+                    blocks.Add(new Block());
+                    blocks.Add(new Block());
+                    blocks.Add(new Block());
+
+                    blocks[0].CreateBlock(x, y);
+                    blocks[1].CreateBlock(x, y - 1);
+                    blocks[2].CreateBlock(x - 1, y);
+                    blocks[3].CreateBlock(x + 1, y);
+                    blocks[4].CreateBlock(x, y + 1);
+                    break;
+                case 9:
+                    blocks.Add(new Block());
+                    blocks.Add(new Block());
+                    blocks.Add(new Block());
+                    blocks.Add(new Block());
+                    blocks.Add(new Block());
+                    blocks.Add(new Block());
+                    blocks.Add(new Block());
+
+                    blocks[0].CreateBlock(x, y);
+                    blocks[1].CreateBlock(x - 1, y - 1);
+                    blocks[2].CreateBlock(x - 1, y);
+                    blocks[3].CreateBlock(x - 1, y + 1);
+                    blocks[4].CreateBlock(x + 1, y - 1);
+                    blocks[5].CreateBlock(x + 1, y);
+                    blocks[6].CreateBlock(x + 1, y + 1);
+                    break;
+                case 10:
+                    blocks.Add(new Block());
+                    blocks.Add(new Block());
+                    blocks.Add(new Block());
+
+                    blocks[0].CreateBlock(x, y);
+                    blocks[1].CreateBlock(x + 1, y);
+                    blocks[2].CreateBlock(x, y - 1);
+                    break;
+                case 11:
+                    blocks.Add(new Block());
+                    blocks.Add(new Block());
+                    blocks.Add(new Block());
+                    blocks.Add(new Block());
+                    blocks.Add(new Block());
+                    blocks.Add(new Block());
+                    blocks.Add(new Block());
+
+                    blocks[0].CreateBlock(x, y);
+                    blocks[1].CreateBlock(x, y - 1);
+                    blocks[2].CreateBlock(x - 1, y - 1);
+                    blocks[3].CreateBlock(x - 1, y);
+                    blocks[4].CreateBlock(x - 2, y);
+                    blocks[5].CreateBlock(x - 3, y);
+                    blocks[6].CreateBlock(x - 4, y);
                     break;
             }
         }
@@ -106,38 +162,57 @@ namespace battleship
 
             for (int i = 1; i < blocksLen; i++)
             {
-                int X = blocks[i].Pos.X;
-                int Y = blocks[i].Pos.Y;
+                int x = blocks[i].Pos.X;
+                int y = blocks[i].Pos.Y;
 
-                int anchorLenX = Math.Abs(anchorX - X);
-                int anchorLenY = Math.Abs(anchorY - Y);
+                int anchorLenX = Math.Abs(anchorX - x);
+                int anchorLenY = Math.Abs(anchorY - y);
 
-                if (X == anchorX)
+                if (x == anchorX)
                 {
                     blocks[i].Pos.Y = anchorY;
 
-                    if (Y > anchorY)
+                    if (y > anchorY)
                     {
-                        blocks[i].Pos.X = X - anchorLenY;
+                        blocks[i].Pos.X = x - anchorLenY;
                     }
-                    else if (Y < anchorY)
+                    else if (y < anchorY)
                     {
-                        blocks[i].Pos.X = X + anchorLenY;
+                        blocks[i].Pos.X = x + anchorLenY;
                     }
-
                 }
-                else if (Y == anchorY)
+                else if (y == anchorY)
                 {
                     blocks[i].Pos.X = anchorX;
 
-                    if (X > anchorX)
+                    if (x > anchorX)
                     {
-                        blocks[i].Pos.Y = Y + anchorLenX;
+                        blocks[i].Pos.Y = y + anchorLenX;
                     }
-                    else if (X < anchorX)
+                    else if (x < anchorX)
                     {
-                        blocks[i].Pos.Y = Y - anchorLenX;
+                        blocks[i].Pos.Y = y - anchorLenX;
                     }
+                }
+                else if (x > anchorX && y > anchorY)
+                {
+                    blocks[i].Pos.X = anchorX - anchorLenY;
+                    blocks[i].Pos.Y = anchorY + anchorLenX;
+                }
+                else if (x < anchorX && y > anchorY)
+                {
+                    blocks[i].Pos.X = anchorX - anchorLenY;
+                    blocks[i].Pos.Y = anchorY - anchorLenX;
+                }
+                else if (x < anchorX && y < anchorY)
+                {
+                    blocks[i].Pos.X = anchorX + anchorLenY;
+                    blocks[i].Pos.Y = anchorY - anchorLenX;
+                }
+                else if (x > anchorX && y < anchorY)
+                {
+                    blocks[i].Pos.X = anchorX + anchorLenY;
+                    blocks[i].Pos.Y = anchorY + anchorLenX;
                 }
             }
         }

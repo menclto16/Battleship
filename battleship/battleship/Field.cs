@@ -11,22 +11,32 @@ namespace battleship
         public List<Ship> ships = new List<Ship>();
         public string playerName;
 
-        public void CreateNewField()
+        public void CreateNewField(int playerNum)
         {
-            Console.Clear();
-
-            Console.WriteLine("Zadej jmeno hrace:");
-
-            try
+            while (true)
             {
-                playerName = Console.ReadLine();
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Spatny vstup!");
+                try
+                {
+                    Console.Clear();
+                    Console.WriteLine("Zadej jmeno hrace #" + playerNum + ":");
+                    Console.WriteLine("(3-30 znaku)");
+
+                    playerName = Console.ReadLine();
+
+                    if (playerName.Length <= 30 && playerName.Length >= 3)
+                    {
+                        break;
+                    }
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Neplatny vstup!..");
+                }
             }
 
-            int[] shipTypeList = { 0, 0, 1, 1, 2, 2, 3, 3, 4, 5, 6, 7 };
+            ships = new List<Ship>();
+
+            int[] shipTypeList = { 0, 0, 1, 1, 2, 3, 4, 7, 9, 10 };
             int shipNum = 0;
             int shipMem = -1;
             bool overlap = false;
@@ -51,7 +61,9 @@ namespace battleship
                 if (overlap)
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Lode se nesmi prekryvat!");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Lode se nesmi prekryvat a musi byt mezi nimi mezera!");
+                    Console.ForegroundColor = ConsoleColor.Gray;
                     overlap = false;
                 }
 
@@ -62,6 +74,11 @@ namespace battleship
 
                 ConsoleKeyInfo inputKey = Console.ReadKey();
 
+                if (inputKey.Key == ConsoleKey.Escape)
+                {
+                    CreateNewField(playerNum);
+                    break;
+                }
                 if (inputKey.Key == ConsoleKey.RightArrow)
                 {
                     ships[shipNum].MoveShip(0);
@@ -97,6 +114,46 @@ namespace battleship
                                     overlap = true;
                                     break;
                                 }
+                                else if (ships[shipNum].blocks[a].Pos.X == ships[b].blocks[c].Pos.X + 1 && ships[shipNum].blocks[a].Pos.Y == ships[b].blocks[c].Pos.Y)
+                                {
+                                    overlap = true;
+                                    break;
+                                }
+                                else if (ships[shipNum].blocks[a].Pos.X == ships[b].blocks[c].Pos.X && ships[shipNum].blocks[a].Pos.Y == ships[b].blocks[c].Pos.Y + 1)
+                                {
+                                    overlap = true;
+                                    break;
+                                }
+                                else if (ships[shipNum].blocks[a].Pos.X == ships[b].blocks[c].Pos.X - 1 && ships[shipNum].blocks[a].Pos.Y == ships[b].blocks[c].Pos.Y)
+                                {
+                                    overlap = true;
+                                    break;
+                                }
+                                else if (ships[shipNum].blocks[a].Pos.X == ships[b].blocks[c].Pos.X && ships[shipNum].blocks[a].Pos.Y == ships[b].blocks[c].Pos.Y - 1)
+                                {
+                                    overlap = true;
+                                    break;
+                                }
+                                else if (ships[shipNum].blocks[a].Pos.X == ships[b].blocks[c].Pos.X + 1 && ships[shipNum].blocks[a].Pos.Y == ships[b].blocks[c].Pos.Y + 1)
+                                {
+                                    overlap = true;
+                                    break;
+                                }
+                                else if (ships[shipNum].blocks[a].Pos.X == ships[b].blocks[c].Pos.X - 1 && ships[shipNum].blocks[a].Pos.Y == ships[b].blocks[c].Pos.Y - 1)
+                                {
+                                    overlap = true;
+                                    break;
+                                }
+                                else if (ships[shipNum].blocks[a].Pos.X == ships[b].blocks[c].Pos.X + 1 && ships[shipNum].blocks[a].Pos.Y == ships[b].blocks[c].Pos.Y - 1)
+                                {
+                                    overlap = true;
+                                    break;
+                                }
+                                else if (ships[shipNum].blocks[a].Pos.X == ships[b].blocks[c].Pos.X - 1 && ships[shipNum].blocks[a].Pos.Y == ships[b].blocks[c].Pos.Y + 1)
+                                {
+                                    overlap = true;
+                                    break;
+                                }
                             }
                         }
                     }
@@ -119,7 +176,7 @@ namespace battleship
         {
             Console.Clear();
 
-            Console.WriteLine("    " + playerName + " umistuje sve lode");
+            Console.WriteLine("    Hrac " + playerName + " umistuje sve lode");
             Console.Write("     A  B  C  D  E  F  G  H  I  J\n");
             for (int y = 0; y < 10; y++)
             {
@@ -169,7 +226,18 @@ namespace battleship
                     Console.BackgroundColor = ConsoleColor.Black;
                 }
             }
-            Console.WriteLine("Sipky - pohyb, R - otoceni, Enter - potvrzeni");
+            Console.WriteLine("Sipky - pohyb, R - otoceni, Enter - potvrzeni, Escape - opakovat");
+        }
+
+        public void UncoverBlocks()
+        {
+            for (int a = 0; a < ships.Count; a++)
+            {
+                for (int b = 0; b < ships[a].blocks.Count; b++)
+                {
+                    ships[a].blocks[b].ChangeState();
+                }
+            }
         }
     }
 }

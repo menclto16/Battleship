@@ -10,8 +10,6 @@ namespace battleship
     {
         static void Main(string[] args)
         {
-            Game game = new Game();
-
             while (true)
             {
                 Console.WriteLine("1) Nova hra");
@@ -33,6 +31,7 @@ namespace battleship
                 switch (selection)
                 {
                     case 1:
+                        Game game = new Game();
                         game.gameType = 0;
                         game.StartGame();
                         break;
