@@ -32,10 +32,13 @@ namespace battleship
             int y;
 
             string userInput = "";
+            int playerNum = 0;
+            int opponentNum = 1;
+            bool match = false;
 
             while (true)
             {
-                Console.WriteLine(map.fields[0].playerName + " strili:");
+                Console.WriteLine(map.fields[playerNum].playerName + " strili:");
                 try
                 {
                     userInput = Console.ReadLine();
@@ -46,19 +49,55 @@ namespace battleship
                 }
 
                 x = userInput[0] - 65;
-                y = (int)Char.GetNumericValue(userInput[1]) - 1;
+
+                y = Int32.Parse(userInput.Substring(1)) - 1;
+                //y = (int)Char.GetNumericValue(userInput[1]) - 1;
+
+                for (int a = 0; a < map.fields[opponentNum].ships.Count; a++)
+                {
+                    if (match) break;
+
+                    for (int b = 0; b < map.fields[opponentNum].ships[a].blocks.Count; b++)
+                    {
+                        if (map.fields[opponentNum].ships[a].blocks[b].Pos.X == x && map.fields[opponentNum].ships[a].blocks[b].Pos.Y == y && !map.fields[opponentNum].ships[a].blocks[b].state)
+                        {
+                            map.fields[opponentNum].ships[a].blocks[b].ChangeState();
+                            match = true;
+                            break;
+                        }
+                    }
+                }
+
+                PrintGraphic();
 
                 Console.WriteLine("x: " + x + " y: " + y);
 
-                for (int a = 0; a < map.fields[0].ships.Count; a++)
+                if (match)
                 {
-                    for (int b = 0; b < map.fields[0].ships[a].blocks.Count; b++)
-                    {
-                        if (map.fields[0].ships[a].blocks[b].Pos.X == x && map.fields[0].ships[a].blocks[b].Pos.Y == y)
-                        {
-                            Console.WriteLine("Zasah!");
-                        }
-                    }
+                    Console.WriteLine("Zasah!");
+                }
+                else if (!match)
+                {
+                    Console.WriteLine("Vedle!");
+                }
+
+                if (!match && playerNum == 0)
+                {
+                    playerNum = 1;
+                    opponentNum = Math.Abs(playerNum - 1);
+                }
+                else if (match && playerNum == 0)
+                {
+                    match = false;
+                }
+                else if (!match && playerNum == 1)
+                {
+                    playerNum = 0;
+                    opponentNum = Math.Abs(playerNum - 1);
+                }
+                else if (match && playerNum == 1)
+                {
+                    match = false;
                 }
             }
             
@@ -68,54 +107,57 @@ namespace battleship
         {
             Console.Clear();
 
-            Console.Write("     A  B  C  D  E  F  G  H  I  J               A  B  C  D  E  F  G  H  I  J\n");
+            string nameString = "    " + map.fields[0].playerName;
+            nameString += String.Concat(Enumerable.Repeat(" ", 43 - map.fields[0].playerName.Length));
+            nameString += map.fields[1].playerName;
+            Console.WriteLine(nameString);
+            Console.WriteLine("     A  B  C  D  E  F  G  H  I  J               A  B  C  D  E  F  G  H  I  J");
             for (int y = 0; y < 10; y++)
             {
-                int numLabel = y + 1;
-                string label = Convert.ToString(numLabel);
-                label = (numLabel < 10) ? " " + label + "  " : " " + label + " ";
-                Console.Write(label);
+                int fieldNum = 0;
+                int column = 0;    
 
-                for (int x = 0; x < 10; x++)
+                for (int x = 0; x < 20; x++)
                 {
+                    if (x == 0 || x == 10)
+                    {
+                        int numLabel = y + 1;
+                        string label = Convert.ToString(numLabel);
+                        label = (numLabel < 10) ? " " + label + "  " : " " + label + " ";
+                        Console.Write(label);
+                    }
+
                     Console.BackgroundColor = ConsoleColor.Gray;
 
-                    for (int a = 0; a < map.fields[0].ships.Count; a++)
+                    for (int a = 0; a < map.fields[fieldNum].ships.Count; a++)
                     {
-                        for (int b = 0; b < map.fields[0].ships[a].blocks.Count; b++)
+                        for (int b = 0; b < map.fields[fieldNum].ships[a].blocks.Count; b++)
                         {
-                            if (x == map.fields[0].ships[a].blocks[b].Pos.X && y == map.fields[0].ships[a].blocks[b].Pos.Y)
+                            if (map.fields[fieldNum].ships[a].blocks[b].Pos.X == column && map.fields[fieldNum].ships[a].blocks[b].Pos.Y == y && map.fields[fieldNum].ships[a].blocks[b].state)
                             {
                                 Console.BackgroundColor = ConsoleColor.Red;
-
-                                for (int c = 0; c < map.fields[0].ships.Count; c++)
-                                {
-                                    if (a == c)
-                                    {
-                                        continue;
-                                    }
-
-                                    for (int d = 0; d < map.fields[0].ships[c].blocks.Count; d++)
-                                    {
-                                        if (map.fields[0].ships[a].blocks[b].Pos.X == map.fields[0].ships[c].blocks[d].Pos.X && map.fields[0].ships[a].blocks[b].Pos.Y == map.fields[0].ships[c].blocks[d].Pos.Y)
-                                        {
-                                            Console.BackgroundColor = ConsoleColor.DarkRed;
-                                        }
-                                    }
-                                }
                             }
                         }
                     }
 
-                    Console.Write("   ");
+                    Console.Write(" X ");
 
-                    if (x == 9)
+                    if (x == 19)
                     {
                         Console.Write("\n");
                     }
 
+                    column++;
+
                     Console.BackgroundColor = ConsoleColor.Black;
-                }
+
+                    if (x == 9)
+                    {
+                        fieldNum++;
+                        column = 0;
+                        Console.Write("         ");
+                    }
+                } 
             }
         }
     }

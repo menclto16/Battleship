@@ -8,7 +8,7 @@ namespace battleship
 {
     class Block
     {
-        bool state = false;
+        public bool state = false;
 
         public Pos Pos = new Pos();
 
@@ -16,6 +16,11 @@ namespace battleship
         {
             Pos.X = x;
             Pos.Y = y;
+        }
+
+        public void ChangeState()
+        {
+            state = true;
         }
     }
 }

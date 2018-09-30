@@ -13,6 +13,8 @@ namespace battleship
 
         public void CreateNewField()
         {
+            Console.Clear();
+
             Console.WriteLine("Zadej jmeno hrace:");
 
             try
@@ -48,6 +50,8 @@ namespace battleship
 
                 if (overlap)
                 {
+                    Console.WriteLine();
+                    Console.WriteLine("Lode se nesmi prekryvat!");
                     overlap = false;
                 }
 
@@ -115,6 +119,7 @@ namespace battleship
         {
             Console.Clear();
 
+            Console.WriteLine("    " + playerName + " umistuje sve lode");
             Console.Write("     A  B  C  D  E  F  G  H  I  J\n");
             for (int y = 0; y < 10; y++)
             {
@@ -164,6 +169,7 @@ namespace battleship
                     Console.BackgroundColor = ConsoleColor.Black;
                 }
             }
+            Console.WriteLine("Sipky - pohyb, R - otoceni, Enter - potvrzeni");
         }
     }
 }
