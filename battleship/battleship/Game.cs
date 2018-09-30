@@ -38,6 +38,7 @@ namespace battleship
 
             while (true)
             {
+                PrintGraphic();
                 Console.WriteLine(map.fields[playerNum].playerName + " strili:");
                 try
                 {
@@ -67,8 +68,6 @@ namespace battleship
                         }
                     }
                 }
-
-                PrintGraphic();
 
                 Console.WriteLine("x: " + x + " y: " + y);
 
