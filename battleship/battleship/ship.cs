@@ -150,6 +150,23 @@ namespace battleship
                     blocks[5].CreateBlock(x - 3, y);
                     blocks[6].CreateBlock(x - 4, y);
                     break;
+                case 12:
+                    blocks.Add(new Block());
+                    blocks.Add(new Block());
+                    blocks.Add(new Block());
+                    blocks.Add(new Block());
+                    blocks.Add(new Block());
+                    blocks.Add(new Block());
+                    blocks.Add(new Block());
+
+                    blocks[0].CreateBlock(x, y);
+                    blocks[1].CreateBlock(x - 2, y);
+                    blocks[2].CreateBlock(x - 1, y - 1);
+                    blocks[3].CreateBlock(x - 1, y);
+                    blocks[4].CreateBlock(x + 1, y - 1);
+                    blocks[5].CreateBlock(x + 1, y);
+                    blocks[6].CreateBlock(x + 2, y);
+                    break;
             }
         }
 

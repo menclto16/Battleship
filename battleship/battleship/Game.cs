@@ -18,6 +18,7 @@ namespace battleship
                 case 0:
                     map.AddNewField(1);
                     map.AddNewField(2);
+                    map.AddNewField(3);
                     break;
             }
 
@@ -29,15 +30,17 @@ namespace battleship
             int x;
             int y;
 
-            string userInput = "";
+            string userInputStr = "";
+            ConsoleKeyInfo userInputInt;
             int playerNum = 0;
-            int opponentNum = 1;
+            int opponentNum;
             bool match = false;
             bool downed = false;
             int numOfDownedBlocks;
             int numOfBlocks = 0;
             int hitBlocks1 = 0;
             int hitBlocks2 = 0;
+            int hitBlocks3 = 0;
 
             foreach (var ship in map.fields[0].ships)
             {
@@ -52,14 +55,48 @@ namespace battleship
 
             while (true)
             {
-                Console.WriteLine("Hrac " + map.fields[playerNum].playerName + " strili:");
+                Console.WriteLine("Hrac " + map.fields[playerNum].playerName + " si voli pole, na ktere bude strilet:");
 
                 while (true)
                 {
                     try
                     {
-                        userInput = Console.ReadLine();
-                        if (userInput.Length <= 3 && userInput.Length >=2 && Char.IsLetter(userInput[0]) && int.TryParse(userInput.Substring(1), out int n))
+                        userInputInt = Console.ReadKey();
+
+                        int selection = int.Parse(userInputInt.KeyChar.ToString());
+
+                        if (selection >= 1 && selection <=3)
+                        {
+                            if (selection - 1 == playerNum)
+                            {
+                                Console.WriteLine("Nemuzes strilet sam na sebe!");
+                            }
+                            else
+                            {
+                                opponentNum = selection - 1;
+
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Spatny vstup! Format vstupu: '1-3'");
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("Spatny vstup! Format vstupu: '1-3'");
+                    }
+                }
+
+                Console.WriteLine("Hrac " + map.fields[playerNum].playerName + " strili na hrace " + map.fields[opponentNum].playerName + ":");
+
+                while (true)
+                {
+                    try
+                    {
+                         userInputStr = Console.ReadLine();
+                        if (userInputStr.Length <= 3 && userInputStr.Length >=2 && Char.IsLetter(userInputStr[0]) && int.TryParse(userInputStr.Substring(1), out int n))
                         {
                             break;
                         }
@@ -74,11 +111,11 @@ namespace battleship
                     }
                 }
 
-                userInput = userInput.ToUpper();
+                userInputStr = userInputStr.ToUpper();
 
-                x = userInput[0] - 65;
+                x = userInputStr[0] - 65;
 
-                y = Int32.Parse(userInput.Substring(1)) - 1;
+                y = Int32.Parse(userInputStr.Substring(1)) - 1;
 
                 for (int a = 0; a < map.fields[opponentNum].ships.Count; a++)
                 {
@@ -92,6 +129,7 @@ namespace battleship
                             match = true;
                             if (playerNum == 0) hitBlocks1++;
                             if (playerNum == 1) hitBlocks2++;
+                            if (playerNum == 2) hitBlocks3++;
                         }
 
                         if (map.fields[opponentNum].ships[a].blocks[b].state) numOfDownedBlocks++;
@@ -122,30 +160,22 @@ namespace battleship
 
                 Console.ForegroundColor = ConsoleColor.Gray;
 
-                if (!match && playerNum == 0)
+                if (!match)
                 {
-                    playerNum = 1;
-                    opponentNum = Math.Abs(playerNum - 1);
+                    playerNum++;
+                    if (playerNum == 3) playerNum = 0;
                 }
-                else if (match && playerNum == 0)
+                else if (match)
                 {
                     match = false;
                     downed = false;
                 }
-                else if (!match && playerNum == 1)
+                
+                if (hitBlocks1 == numOfBlocks || hitBlocks2 == numOfBlocks || hitBlocks3 == numOfBlocks)
                 {
-                    playerNum = 0;
-                    opponentNum = Math.Abs(playerNum - 1);
-                }
-                else if (match && playerNum == 1)
-                {
-                    match = false;
-                    downed = false;
-                }
-
-                if (hitBlocks1 == numOfBlocks || hitBlocks2 == numOfBlocks)
-                {
-                    map.fields[playerNum].UncoverBlocks();
+                    map.fields[0].UncoverBlocks();
+                    map.fields[1].UncoverBlocks();
+                    map.fields[2].UncoverBlocks();
                     map.PrintMap();
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("\nHrac " + map.fields[playerNum].playerName + " vyhral!");

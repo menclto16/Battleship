@@ -36,7 +36,7 @@ namespace battleship
 
             ships = new List<Ship>();
 
-            int[] shipTypeList = { 0, 0, 1, 1, 2, 3, 4, 7, 9, 10 };
+            int[] shipTypeList = { 0, 12 };
             int shipNum = 0;
             int shipMem = -1;
             bool overlap = false;

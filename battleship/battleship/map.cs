@@ -22,10 +22,15 @@ namespace battleship
             Console.Clear();
 
             string nameString = "    " + fields[0].playerName;
-            nameString += String.Concat(Enumerable.Repeat(" ", 43 - fields[0].playerName.Length));
+            nameString += String.Concat(Enumerable.Repeat(" ", 38 - fields[0].playerName.Length));
             nameString += fields[1].playerName;
+            nameString += String.Concat(Enumerable.Repeat(" ", 38 - fields[1].playerName.Length));
+            nameString += fields[2].playerName;
             Console.WriteLine(nameString);
-            Console.WriteLine("     A  B  C  D  E  F  G  H  I  J               A  B  C  D  E  F  G  H  I  J");
+            Console.Write("     A  B  C  D  E  F  G  H  I  J     ");
+            Console.Write("     A  B  C  D  E  F  G  H  I  J     ");
+            Console.Write("     A  B  C  D  E  F  G  H  I  J\n");
+
             for (int y = 0; y < 10; y++)
             {
                 int fieldNum = 0;
@@ -33,9 +38,9 @@ namespace battleship
                 int numOfDownedBlocks;
                 bool downed = false;
 
-                for (int x = 0; x < 20; x++)
+                for (int x = 0; x < 30; x++)
                 {
-                    if (x == 0 || x == 10)
+                    if (x == 0 || x == 10 || x == 20)
                     {
                         int numLabel = y + 1;
                         string label = Convert.ToString(numLabel);
@@ -78,7 +83,7 @@ namespace battleship
 
                     Console.Write(" X ");
 
-                    if (x == 19)
+                    if (x == 29)
                     {
                         Console.Write("\n");
                     }
@@ -87,11 +92,11 @@ namespace battleship
 
                     Console.BackgroundColor = ConsoleColor.Black;
 
-                    if (x == 9)
+                    if (x == 9 || x == 19)
                     {
                         fieldNum++;
                         column = 0;
-                        Console.Write("         ");
+                        Console.Write("    ");
                     }
                 }
             }
